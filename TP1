@@ -30,10 +30,24 @@ return_sum = Stocks['Log Return'].sum()
 print('Logarithemic Return summed up is ', return_sum)
 
 #Number 2
-#Run linear regression with statsmodel.apiOLS with t-1 and t-2
-#R = B0 + B1*Pt-1 + B2*Pt-2 + E 
 
-#Coefficients should be zero due to EMH
+import statsmodels.api as sm
+from statsmodels.api import OLS
+
+Stocks['Return_lag1'] = Stocks['Return'].shift(1)
+Stocks['Return_lag2'] = Stocks['Return'].shift(2)
+
+#Dropping row with NA for regression
+Stocks.dropna(subset=['Return_lag2'], inplace = True)
+
+y = Stocks['Return']
+X = Stocks[['Return_lag1', 'Return_lag2']]
+X = sm.add_constant(X)
+
+lm = OLS(y, X)
+results1 = lm.fit()
+
+results1.params
 
 #Number 3.1
 #Fit normal distribution with stas.norm.fit func
