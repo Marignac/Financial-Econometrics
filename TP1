@@ -1,13 +1,16 @@
 #TP1 Financial Econometrics 
 
 import pandas as pd
-#Number 1.1
+import numpy as np
+
 file_path = 'TP1.xls'
 
 header_row = 2
 df = pd.read_excel(file_path, header = header_row, skiprows = [0,4])
+df = pd.DataFrame(df)
+Stocks= df.set_index('Name',drop=True)
 
-df.head()
+Stocks.head()
 
 #Number 1.1
 #Calculte arithmetic and logarethimic returns add as columns 
