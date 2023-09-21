@@ -12,11 +12,10 @@ Stocks= df.set_index('Name',drop=True)
 
 Stocks.head()
 
-#Number 1.1
-#Calculte arithmetic and logarethimic returns add as columns 
+#Number 1.1 
 
 Stocks['Sum_All_Stocks'] = Stocks.sum(axis=1)
-Stocks['AR Return'] = Stocks['Sum_All_Stocks'][1:] /Stocks['Sum_All_Stocks'][:-1].values -1
+Stocks['Return'] = Stocks['Sum_All_Stocks'][1:] /Stocks['Sum_All_Stocks'][:-1].values -1
 log_return = (Stocks['Sum_All_Stocks'][1:] /Stocks['Sum_All_Stocks'][:-1].values)
 Stocks['Log Return'] =np.log10(log_return)
 
@@ -63,32 +62,92 @@ results1.params
 #Here we see that the EMH doesn't hold because the coefficients are not 0 
 #Meaning that that past returns influence returns today 
 
-#Number 3.1
-#Fit normal distribution with stas.norm.fit func
+#Number 3
+from scipy import stats
+returns = Stocks['Return']
+
+#Number 3.1 
+mean, std_dev = stats.norm.fit(returns)
+var = std_dev**2
+print('Fitted Normal distribution:' )
+print('The mean is is', mean)
+print('The standard deviation is', std_dev)
 
 #Number 3.2 
-#Compute moments 1-4 Mean, Variance, Sknewness, Kurtosis
-#Save u and sigma2 to later use 
+from scipy.stats import skew, kurtosis
 
-#Number 3.3
-#Second moment COV matrix
-#1 Matrix for 5 stocks
+mean_return = np.mean(returns)
+variance_return = np.var(returns)
 
-#Number 3.4
-#Previously saved mu and sigman 
-a=np.random.normal(mu, sigma, 10000)
+# Compute skewness and kurtosis
+skewness_return = skew(returns)
+kurtosis_return = kurtosis(returns)
 
-#Compute 3rd and 4th moment 
+# Print the computed statistics
+print("Mean of Returns:", mean_return)
+print("Variance of Returns:", variance_return)
+print("Skewness of Returns:", skewness_return)
+print("Kurtosis of Returns:", kurtosis_return)
 
-#Comment on normal distribution compare to 3.3
+#Number 3.3 
+returns_data = Stocks[['MICROSOFT ', 'CREDIT SUISSE ASST.MAN. ', 'BOEING ', 'COCA COLA ','NIKE']]
+covariance_matrix = np.cov(returns_data, rowvar=False)
+
+print(covariance_matrix)
+
+#Number 3.4 
+a=np.random.normal(mean, std_dev, 10000)
+
+skewness_random = skew(a)
+kurtosis_random = kurtosis(a)
+
+
+print("Skewness of Randomized Sample:", skewness_random)
+print("Kurtosis of Randomized Sample:", kurtosis_random)
 
 #Number 4
-#Split date into 5 and run (maybe make a function out of 3 to save time on 4) 
+# Calculate the number of rows in each sub-DataFrame
+num_rows_per_subframe = len(returns_data) // 5
+
+# Split the DataFrame into 5 smaller DataFrames
+subframes = np.array_split(returns_data, 5)
+
+#Calculate
+for i, subframe in enumerate(subframes):
+    print(subframes[i])
+    mean_return = np.mean(subframes[i])
+    variance_return = np.var(subframes[i])
+
+    # Compute skewness and kurtosis
+    skewness_return = skew(subframes[i])
+    kurtosis_return = kurtosis(subframes[i])
+
+    # Print the computed statistics
+    print("Mean of Returns:")
+    print(mean_return)
+    print("Variance of Returns:")
+    print(variance_return)
+    print("Skewness of Returns:", skewness_return)
+    print("Kurtosis of Returns:", kurtosis_return)
+    
+    # Comment
 
 #Number 5
-#Write function for 2nd, 3rd and 4th moment
+def Moments(data):
+    import numpy as np
+    from scipy.stats import skew, kurtosis
 
-def moments_function(db):
-  
+    mean_return = np.mean(returns)
+    variance_return = np.var(returns)
 
-#func(stock) -> return 2nd moment 3rd monet 4th moment 
+    # Compute skewness and kurtosis
+    skewness_return = skew(returns)
+    kurtosis_return = kurtosis(returns)
+
+    # Print the computed statistics
+    print("Mean of Returns:", mean_return)
+    print("Variance of Returns:", variance_return)
+    print("Skewness of Returns:", skewness_return)
+    print("Kurtosis of Returns:", kurtosis_return)
+    
+Moments(subframes[1])
