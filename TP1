@@ -23,17 +23,25 @@ Stocks['Log Return'] =np.log10(log_return)
 Stocks.head()
 
 #Number 1.2
-return_sum = Stocks['Return'].sum()
-print('Daily Return summed up is ', return_sum)
 
-return_sum = Stocks['AR Return'].sum()
-print('Arithmetic Return summed up is ', return_sum)
+return_sum = Stocks['Return'].sum()
+print('The sum of all returns is', return_sum)
+
+final_return = Stocks['Sum_All_Stocks'].iloc[-1] - Stocks['Sum_All_Stocks'].iloc[0] - 1
+
+print('Arithmetic Return is', final_return)
+
+print()
 
 return_sum = Stocks['Log Return'].sum()
 print('Logarithemic Return summed up is ', return_sum)
 
-#Number 2
+log_return = np.log10(Stocks['Sum_All_Stocks'].iloc[-1]) - np.log10(Stocks['Sum_All_Stocks'].iloc[0])
+print('Logarithemic Return is', log_return)
 
+#Here we can see that the arithmetic returns differ while the logarithemic return is the same
+
+#Number 2 
 import statsmodels.api as sm
 from statsmodels.api import OLS
 
@@ -51,6 +59,9 @@ lm = OLS(y, X)
 results1 = lm.fit()
 
 results1.params
+
+#Here we see that the EMH doesn't hold because the coefficients are not 0 
+#Meaning that that past returns influence returns today 
 
 #Number 3.1
 #Fit normal distribution with stas.norm.fit func
