@@ -11,14 +11,23 @@ df.head()
 
 #Number 1.1
 #Calculte arithmetic and logarethimic returns add as columns 
-#AR = (Pt-Pt-1)/Pt-1 
-#L = log(Pt/Pt-1)
+
+Stocks['Sum_All_Stocks'] = Stocks.sum(axis=1)
+Stocks['AR Return'] = Stocks['Sum_All_Stocks'][1:] /Stocks['Sum_All_Stocks'][:-1].values -1
+log_return = (Stocks['Sum_All_Stocks'][1:] /Stocks['Sum_All_Stocks'][:-1].values)
+Stocks['Log Return'] =np.log10(log_return)
+
+Stocks.head()
 
 #Number 1.2
-#Sum daily returns 
-#sum(col_AR)
+return_sum = Stocks['Return'].sum()
+print('Daily Return summed up is ', return_sum)
 
-#Compare results 
+return_sum = Stocks['AR Return'].sum()
+print('Arithmetic Return summed up is ', return_sum)
+
+return_sum = Stocks['Log Return'].sum()
+print('Logarithemic Return summed up is ', return_sum)
 
 #Number 2
 #Run linear regression with statsmodel.apiOLS with t-1 and t-2
