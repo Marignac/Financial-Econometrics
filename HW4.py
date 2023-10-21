@@ -153,12 +153,20 @@ model = LinearRegression().fit(np.array(returns.iloc[exactDate,:len(returns.colu
 model.intercept_
 model.coef_
 
+minDate = 0
+maxDate = 0
+for i in range(0,len(SuPC)):
+  if SuPC.iloc[i,0] == datetime.strptime("11-23-2000", '%m-%d-%Y').date():
+    minDate = i
+  if SuPC.iloc[i,0] == datetime.strptime("11-14-2002", '%m-%d-%Y').date():
+    maxDate = i
 
 estimates = {"Period": list(range(0, maxDate-minDate)),
               "Psi1": 0,
               "Psi2": 0}
                   
 estimates = pd.DataFrame(estimates, index = list(range(maxDate-minDate)))
+estimates
 
 pfReturns = {"Period": list(range(0,maxDate-minDate)),
               "PF1" : 0,
@@ -186,14 +194,11 @@ for i in range(minDate,maxDate):
     number = 0
 pfReturns
 
-for i in range(1,len(estimates)):
-  model = LinearRegression().fit(np.array(portfolios.iloc[:,1]).reshape((-1, 1)), np.array())
+for i in range(0,len(estimates)):
+  model = LinearRegression().fit(np.array(pfReturns.iloc[i,1:]).reshape((-1, 1)), np.array(portfolios.iloc[:,1]))
   estimates.iloc[i,1] = model.intercept_
   estimates.iloc[i,2] = model.coef_
 
 np.mean(estimates.iloc[i,1])
 np.mean(estimates.iloc[i,2])
 
-for k in parametersSplit[0].index:
-  print(k)
-1
