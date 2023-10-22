@@ -199,6 +199,8 @@ for i in range(0,len(estimates)):
   estimates.iloc[i,1] = model.intercept_
   estimates.iloc[i,2] = model.coef_
 
-np.mean(estimates.iloc[i,1])
-np.mean(estimates.iloc[i,2])
-
+# Testing alpha
+(np.mean(estimates.iloc[:,1]) / np.std(estimates.iloc[:,1]))*math.sqrt(maxDate-minDate)
+t.ppf(0.975,maxDate-minDate-1)
+(np.mean(estimates.iloc[:,2]) / np.std(estimates.iloc[:,2]))*math.sqrt(maxDate-minDate)
+t.ppf(0.95,maxDate-minDate-1)
